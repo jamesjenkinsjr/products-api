@@ -26,4 +26,15 @@ router.get('/products', (req, res) => {
     })
 });
 
+router.get('/products/:id', (req, res) => {
+    const { id } = req.params;
+    const productsObject = productArrToObj(mockProducts); //this will get deleted
+    const selectedProduct = productsObject[id];
+    res.status(200).json({
+        products: {
+            [id]: selectedProduct
+        }
+    })
+}); 
+
 module.exports = router; //like export default

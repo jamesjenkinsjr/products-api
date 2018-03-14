@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const mockProducts = require('../mocks/products');
 
 router.get('/products', (req, res) => {
-    res.send('here be the proucts');
+    res.status(200).json({
+        products: mockProducts
+    })
 });
 
 module.exports = router; //like export default

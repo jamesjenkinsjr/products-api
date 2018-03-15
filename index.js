@@ -1,5 +1,6 @@
 const express = require('express');
 const serverApp = express();
+require('dotenv').config();
 
 const PORT = process.env.port || 5000; //necessary for Heroku deployment
 

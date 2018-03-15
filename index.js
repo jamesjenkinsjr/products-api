@@ -1,6 +1,10 @@
 const express = require('express');
 const serverApp = express();
+const mongoose = require('mongoose');
+
 require('dotenv').config();
+
+mongoose.connect(process.env.MONGO_URI);
 
 const PORT = process.env.port || 5000; //necessary for Heroku deployment
 

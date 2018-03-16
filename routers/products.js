@@ -12,7 +12,7 @@ const productArrToObj = (arrayOfProducts) => {
         //grab the id
         const id = product._id;
         //copy the products
-        const copy = {...product};
+        const copy = {...product._doc};
         //delete _id from interal to product object
         delete copy._id;
         //set id value in accumulator object equal to product
@@ -23,9 +23,18 @@ const productArrToObj = (arrayOfProducts) => {
 }
 
 router.get('/products', (req, res) => {
-    res.status(200).json({
-        products: productArrToObj(mockProducts)
-    })
+    Product.find()
+        .exec()
+        .then(allProducts => {
+            res.status(200).json({
+                products: productArrToObj(allProducts)
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                msg: 'Woes bro -- shiz iz broke'
+            })
+        });
 });
 
 router.get('/products/:id', (req, res) => {

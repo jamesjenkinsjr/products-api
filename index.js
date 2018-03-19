@@ -3,20 +3,15 @@ const serverApp = express();
 const mongoose = require('mongoose');
 
 require('dotenv').config();
-
+//middleware imports
+const logger = require('./middleware/logger');
 mongoose.connect(process.env.MONGO_URI);
 
 const PORT = process.env.port || 5000; //necessary for Heroku deployment
 
 //routers
 const productRouter = require('./routers/products');
-
-serverApp.use(function logger(req, ers, next){
-    const { url } = req;
-    const date = new Date();
-    console.log(`URL: ${url} @ ${date}`);
-    next();
-});
+serverApp.use(logger);
 serverApp.use(productRouter); //register the router with the application
 
 serverApp.get('/', (req, res) => {

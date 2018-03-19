@@ -14,6 +14,10 @@ const productRouter = require('./routers/products');
 serverApp.use(logger);
 serverApp.use(productRouter); //register the router with the application
 
+serverApp.use(function notFoundHandler(req, res){
+    res.status(404).send('Lions, tigers, and bears -- OH MY!')
+});
+
 serverApp.get('/', (req, res) => {
     res.send('HELLO! I work');
 })

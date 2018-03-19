@@ -84,7 +84,18 @@ router.put('/products/:id', (req, res) => {
 });
 //delete (DELETE)
 router.delete('/products/:id', (req, res) => {
-    res.send('Deleting now...');
+    const { id } = req.params;
+    Product.findByIdAndRemove(id)
+        .then(response => {
+            res.status(200).json({
+                msg: "You have irreparably removed the record - righto!"
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                msg: "You have failed in your attempt to remove the record - R.I.P."
+            })
+        });
 });
 
 module.exports = router; //like export default

@@ -44,19 +44,19 @@ router.get("/products/:id", (req, res) => {
     .then(selectedProduct => {
         const selectedID = selectedProduct._id;
         const copy = {...selectedProduct._doc};
-        res.status(200).json({
-        products: {
-          [selectedProduct._id]: selectedProduct
-        }
-
-      })
+        res.status(200)
+        .json({
+            products: {
+            [selectedProduct._id]: selectedProduct
+            }
+        })
     })
       .catch(err => {
         res.status(500).json({
           msg: "Woes bro -- shiz iz broke -- getByID"
         });
       });
-  });
+});
 
 router.post("/products", (req, res) => {
   const product = new Product({
@@ -76,6 +76,15 @@ router.post("/products", (req, res) => {
         msg: "Your stuff done broek."
       });
     });
+});
+
+//update (PUT)
+router.put('/products/:id', (req, res) => {
+    res.send('Updating now...');
+});
+//delete (DELETE)
+router.delete('/products/:id', (req, res) => {
+    res.send('Deleting now...');
 });
 
 module.exports = router; //like export default

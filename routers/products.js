@@ -22,22 +22,19 @@ const productArrToObj = arrayOfProducts => {
   return accumulator;
 };
 
-router.get("/products", (req, res) => {
+router.get("/products", (req, res, next) => {
   Product.find()
     .exec()
     .then(allProducts => {
+      //throw new Error('something gone bad'); //Force errors to test for issues
       res.status(200).json({
         products: productArrToObj(allProducts)
       });
     })
-    .catch(err => {
-      res.status(500).json({
-        msg: "Woes bro -- shiz iz broke"
-      });
-    });
+    .catch(next);
 });
 
-router.get("/products/:id", (req, res) => {
+router.get("/products/:id", (req, res, next) => {
   const { id } = req.params;
   Product.findById(id)
     .exec()
@@ -51,18 +48,17 @@ router.get("/products/:id", (req, res) => {
             }
         })
     })
-      .catch(err => {
-        res.status(500).json({
-          msg: "Woes bro -- shiz iz broke -- getByID"
-        });
-      });
+      .catch(next);
 });
 
-router.post("/products", (req, res) => {
+router.post("/products", (req, res, next) => {
+  if(!req.body.name){
+    next({msg: "bad request"})
+  }
   const product = new Product({
-    name: "something new",
-    price: 1000,
-    imgSrc: "https://via.placeholder.com/250x250"
+    name: req.body.name,
+    price: req.body.price,
+    imgSrc: req.body.imgSrc
   });
   const x = product
     .save()
@@ -71,18 +67,14 @@ router.post("/products", (req, res) => {
         msg: "successfully created product"
       });
     })
-    .catch(err => {
-      res.status(500).json({
-        msg: "Your stuff done broek."
-      });
-    });
+    .catch(next);
 });
 
 //update (PUT)
-router.put('/products/:id', (req, res) => {
+router.put('/products/:id', (req, res, next) => {
     const { id } = req.params;
     const update = {
-        name: "updated name"
+        name: req.body.name
     };
     Product.findByIdAndUpdate(id, update)
         .then(response => {
@@ -90,14 +82,10 @@ router.put('/products/:id', (req, res) => {
                 msg: "Plopped the pieces of info into the part sought"
             });
         })
-        .catch(err => {
-            res.status(500).json({
-                msg: "Please put proper care into parts of your code"
-            });
-        });
+        .catch(next);
 });
 //delete (DELETE)
-router.delete('/products/:id', (req, res) => {
+router.delete('/products/:id', (req, res, next) => {
     const { id } = req.params;
     Product.findByIdAndRemove(id)
         .then(response => {
@@ -105,11 +93,7 @@ router.delete('/products/:id', (req, res) => {
                 msg: "You have irreparably removed the record - righto!"
             })
         })
-        .catch(err => {
-            res.status(500).json({
-                msg: "You have failed in your attempt to remove the record - R.I.P."
-            })
-        });
+        .catch(next);
 });
 
 module.exports = router; //like export default

@@ -10,7 +10,7 @@ const notFoundHandler = require('./middleware/notFoundHandler');
 const serverErrorHandler = require('./middleware/serverError');
 mongoose.connect(process.env.MONGO_URI);
 
-const PORT = process.env.port || 5000; //necessary for Heroku deployment
+const PORT = process.env.PORT || 5000; //necessary for Heroku deployment
 
 //routers
 const productRouter = require('./routers/products');

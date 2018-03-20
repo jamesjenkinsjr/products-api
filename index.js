@@ -16,6 +16,11 @@ serverApp.use(logger);
 serverApp.use(productRouter); //register the router with the application
 
 serverApp.use(notFoundHandler);
+serverApp.use(function serverErrorHandler(err, req, res, next){
+    res.status(500).json({
+        msg: 'Something done broke'
+    });
+});
 
 serverApp.get('/', (req, res) => {
     res.send('HELLO! I work');
